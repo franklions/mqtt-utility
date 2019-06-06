@@ -47,6 +47,7 @@ import javax.swing.UIManager;
 import javax.swing.border.EtchedBorder;
 
 import org.eclipse.paho.client.mqttv3.*;
+import org.eclipse.paho.client.mqttv3.internal.security.SSLSocketFactoryFactory;
 import org.eclipse.paho.client.mqttv3.persist.MqttDefaultFilePersistence;
 
 /**
@@ -87,8 +88,8 @@ public class MQTTFrame implements ActionListener, MqttCallback, Runnable {
 	 */
     protected static final Dimension DROP_DOWN_DIMENSION = new Dimension(35, 20);
     protected static final Insets TEXT_MARGINS = new Insets(3,3,3,3);
-    protected static final int FRAME_WIDTH = 375;
-    protected static final int FRAME_HEIGHT = 450;
+    protected static final int FRAME_WIDTH = 793;
+    protected static final int FRAME_HEIGHT = 684;
 
     // The name of the properties file
     private final static String PROP_FILE = "mqtt.properties";
@@ -418,6 +419,20 @@ public class MQTTFrame implements ActionListener, MqttCallback, Runnable {
 			     optionsComp.getLWTQoS(),
 			     optionsComp.isLWTRetainSelected());
 		}
+        //ssl
+		if(optionsComp.isSsl()){
+			// Set global SSL properties for all Joynr SSL clients
+			Properties sslClientProperties = new Properties();
+			sslClientProperties.setProperty(SSLSocketFactoryFactory.KEYSTORETYPE, "JKS");
+			sslClientProperties.setProperty(SSLSocketFactoryFactory.KEYSTORE, optionsComp.getSslKeyStoreDir());
+			sslClientProperties.setProperty(SSLSocketFactoryFactory.KEYSTOREPWD, optionsComp.getSslKeyStorePwd());
+			sslClientProperties.setProperty(SSLSocketFactoryFactory.TRUSTSTORETYPE, "JKS");
+			sslClientProperties.setProperty(SSLSocketFactoryFactory.TRUSTSTORE, optionsComp.getSslTrustStoreDir());
+			sslClientProperties.setProperty(SSLSocketFactoryFactory.TRUSTSTOREPWD, optionsComp.getSslTrustStorePwd());
+			opts.setSSLProperties(sslClientProperties);
+
+		}
+
 	mqtt.connect(opts);
     }
 

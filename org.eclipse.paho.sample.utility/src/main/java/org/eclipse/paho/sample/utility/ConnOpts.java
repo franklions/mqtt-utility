@@ -68,6 +68,13 @@ public class ConnOpts extends JPanel implements ActionListener {
 	private JTextField password;
 
 
+	private JCheckBox sslEnable;
+	private JTextField sslKeyStoreDir;
+    private JTextField sslTrustStoreDir;
+    private JTextField sslKeyStorePwd;
+    private JTextField sslTrustStorePwd;
+
+
 	/**
 	 * Constructor for ConnOpts. The constructor builds all the GUI objects required and creates the
 	 * dialog in hidden mode ready to be made visible when required.
@@ -109,7 +116,7 @@ public class ConnOpts extends JPanel implements ActionListener {
         // Top part
         JPanel top = new JPanel();
         top.setBorder( new EtchedBorder() );
-        top.setLayout( new GridLayout(6,1) );
+        top.setLayout( new GridLayout(9,1) );
 
         // Create a title in BOLD with a trace button
         JLabel optsLabel = new JLabel("Session Options:    ", SwingConstants.LEFT);
@@ -180,6 +187,44 @@ public class ConnOpts extends JPanel implements ActionListener {
         user.add( new JLabel("Password:", SwingConstants.LEFT) );
         user.add(password);
 
+        //create ssl
+        JPanel sslPanel = new JPanel();
+        sslPanel.setLayout( new FlowLayout( FlowLayout.LEFT) );
+
+        sslEnable = new JCheckBox();
+        sslPanel.add( new JLabel("Use TLS:", SwingConstants.LEFT) );
+        sslPanel.add(sslEnable);
+
+        JPanel sslKeyStorePanel = new JPanel();
+        sslKeyStorePanel.setLayout( new FlowLayout( FlowLayout.LEFT) );
+
+        sslKeyStoreDir = new JTextField("sslKeyStoreDir",15);
+        sslKeyStoreDir.setMaximumSize(MQTTFrame.TEXT_FIELD_DIMENSION);
+
+        sslKeyStorePwd = new JTextField("sslKeyStorePwd",15);
+        sslKeyStorePwd.setMaximumSize(MQTTFrame.TEXT_FIELD_DIMENSION);
+
+        JPanel sslTrustPanel = new JPanel();
+        sslTrustPanel.setLayout( new FlowLayout( FlowLayout.LEFT) );
+
+        sslTrustStoreDir = new JTextField("sslTrustStoreDir",15);
+        sslTrustStoreDir.setMaximumSize(MQTTFrame.TEXT_FIELD_DIMENSION);
+
+        sslTrustStorePwd = new JTextField("sslTrustStorePwd",15);
+        sslTrustStorePwd.setMaximumSize(MQTTFrame.TEXT_FIELD_DIMENSION);
+
+        sslKeyStorePanel.add( new JLabel("SslKeyStoreDir:", SwingConstants.LEFT) );
+        sslKeyStorePanel.add(sslKeyStoreDir);
+
+        sslKeyStorePanel.add( new JLabel("SslKeyStorePwd:", SwingConstants.LEFT) );
+        sslKeyStorePanel.add(sslKeyStorePwd);
+
+        sslTrustPanel.add( new JLabel("SslTrustStoreDir:", SwingConstants.LEFT) );
+        sslTrustPanel.add(sslTrustStoreDir);
+
+        sslTrustPanel.add( new JLabel("SslTrustStorePwd:", SwingConstants.LEFT) );
+        sslTrustPanel.add(sslTrustStorePwd);
+
         // Now add all the components to the top part of the options panel
         top.add( optsLabelAndTrace );
         top.add( cid );
@@ -187,6 +232,9 @@ public class ConnOpts extends JPanel implements ActionListener {
         top.add( timeouts );
         top.add( log );
         top.add( user );
+        top.add( sslPanel);
+        top.add( sslKeyStorePanel);
+        top.add(sslTrustPanel);
 
         // Create components required for Last Will and Testament
         // CENTER pane - Last Will and Testament options
@@ -391,5 +439,24 @@ public class ConnOpts extends JPanel implements ActionListener {
     public String getPassword(){
 	    return password.getText();
     }
-	
+
+    public Boolean isSsl(){
+	    return sslEnable.isSelected();
+    }
+
+    public String getSslKeyStoreDir(){
+	    return sslKeyStoreDir.getText();
+    }
+
+    public String getSslKeyStorePwd(){
+	    return sslKeyStorePwd.getText();
+    }
+
+    public String getSslTrustStoreDir(){
+	    return sslTrustStoreDir.getText();
+    }
+
+    public String getSslTrustStorePwd(){
+	    return sslTrustStorePwd.getText();
+    }
 }
